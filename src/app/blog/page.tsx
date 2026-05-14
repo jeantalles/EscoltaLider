@@ -1,4 +1,5 @@
 
+import Link from "next/link";
 import { getBlogPosts } from "@/lib/notion";
 
 export const metadata = {
@@ -22,29 +23,41 @@ export default async function BlogPage() {
       <div className="blog-content">
         {featured ? (
           <>
-            <article className="blog-featured">
-              <div className="blog-featured-image">
-                <div className="blog-image-placeholder" aria-hidden="true" />
-              </div>
-              <div className="blog-featured-text">
-                <p className="eyebrow">{featured.publishedAt ?? "Escolta Lider"}</p>
-                <h2>{featured.title}</h2>
-                {featured.excerpt && (
-                  <p className="blog-featured-excerpt">{featured.excerpt}</p>
-                )}
-                <span className="blog-read-more">Ler artigo →</span>
-              </div>
-            </article>
+            <Link href={`/blog/${featured.slug}`} className="blog-featured-link">
+              <article className="blog-featured">
+                <div className="blog-featured-image">
+                  {featured.cover ? (
+                    <img src={featured.cover} alt={featured.title} className="blog-featured-img" />
+                  ) : (
+                    <div className="blog-image-placeholder" aria-hidden="true" />
+                  )}
+                </div>
+                <div className="blog-featured-text">
+                  <p className="eyebrow">{featured.publishedAt ?? "Escolta Lider"}</p>
+                  <h2>{featured.title}</h2>
+                  {featured.excerpt && (
+                    <p className="blog-featured-excerpt">{featured.excerpt}</p>
+                  )}
+                  <span className="blog-read-more">Ler artigo →</span>
+                </div>
+              </article>
+            </Link>
 
             {rest.length > 0 && (
               <div className="blog-grid" aria-label="Mais posts">
                 {rest.map((post) => (
-                  <article className="blog-grid-card" key={post.id}>
-                    <div className="blog-image-placeholder" aria-hidden="true" />
-                    <span>{post.publishedAt ?? "Escolta Lider"}</span>
-                    <h3>{post.title}</h3>
-                    {post.excerpt && <p>{post.excerpt}</p>}
-                  </article>
+                  <Link href={`/blog/${post.slug}`} key={post.id} className="blog-grid-card-link">
+                    <article className="blog-grid-card">
+                      {post.cover ? (
+                        <img src={post.cover} alt={post.title} className="blog-grid-img" />
+                      ) : (
+                        <div className="blog-image-placeholder" aria-hidden="true" />
+                      )}
+                      <span>{post.publishedAt ?? "Escolta Lider"}</span>
+                      <h3>{post.title}</h3>
+                      {post.excerpt && <p>{post.excerpt}</p>}
+                    </article>
+                  </Link>
                 ))}
               </div>
             )}

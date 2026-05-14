@@ -20,6 +20,7 @@ type NotionProperty = {
 
 type NotionPage = {
   id: string;
+  created_time?: string;
   properties?: Record<string, NotionProperty>;
 };
 
@@ -59,9 +60,15 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
           "Notion-Version": "2022-06-28",
         },
         body: JSON.stringify({
+          filter: {
+            property: "Status",
+            select: {
+              equals: "Publicado",
+            },
+          },
           sorts: [
             {
-              property: "Published",
+              timestamp: "created_time",
               direction: "descending",
             },
           ],
@@ -82,7 +89,6 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
         readText(readProperty(properties, ["Title", "Name", "Titulo"])) ||
         "Sem titulo";
       const slug =
-        readText(readProperty(properties, ["Slug", "slug"])) ||
         title
           .toLowerCase()
           .normalize("NFD")
@@ -92,11 +98,9 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
       const excerpt = readText(
         readProperty(properties, ["Excerpt", "Resumo", "Description"]),
       );
-      const publishedAt = readProperty(properties, [
-        "Published",
-        "Published At",
-        "Data",
-      ])?.date?.start;
+      const publishedAt = page.created_time
+        ? new Date(page.created_time).toLocaleDateString("pt-BR")
+        : undefined;
 
       return {
         id: page.id,

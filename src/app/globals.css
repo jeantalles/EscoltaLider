@@ -227,7 +227,7 @@ img {
   inset: 0 0 -54px;
   content: "";
   background:
-    linear-gradient(180deg, rgba(54, 58, 58, 0.72) 0%, rgba(54, 58, 58, 0.46) 62%, rgba(54, 58, 58, 0.02) 100%);
+    linear-gradient(180deg, rgba(37, 59, 66, 0.56) 0%, rgba(37, 59, 66, 0.34) 62%, rgba(37, 59, 66, 0.02) 100%);
   backdrop-filter: blur(14px);
   -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 48%, rgba(0, 0, 0, 0.62) 70%, transparent 100%);
   mask-image: linear-gradient(180deg, #000 0%, #000 48%, rgba(0, 0, 0, 0.62) 70%, transparent 100%);
@@ -265,7 +265,7 @@ img {
   gap: clamp(20px, 2.2vw, 38px);
   transform: translateX(-50%);
   color: var(--cream);
-  font-size: 13.5px;
+  font-size: 14.5px;
   font-weight: 400;
   line-height: 23.95px;
   white-space: nowrap;
@@ -545,7 +545,7 @@ img {
   padding: 48px 48px 32px;
   border-radius: 14.97px;
   background: var(--dark-blue);
-  text-align: center;
+  text-align: left;
   transition:
     box-shadow 220ms var(--ease-out),
     transform 180ms var(--ease-out);
@@ -554,7 +554,7 @@ img {
 .service-card h3 {
   width: 100%;
   min-height: 70px;
-  margin: 0 auto 20px;
+  margin: 0 0 20px;
   color: var(--orange);
   font-size: 26.94px;
   font-weight: 700;
@@ -565,7 +565,7 @@ img {
 
 .service-card p {
   max-width: 401px;
-  margin: 0 auto;
+  margin: 0;
   color: var(--cream);
   font-size: 16px;
   font-weight: 400;
@@ -850,9 +850,9 @@ img {
 }
 
 .quote-icon {
-  width: 13px;
-  height: 12px;
-  margin-bottom: 34px;
+  width: 24px;
+  height: 22px;
+  margin-bottom: 30px;
 }
 
 .testimonial-card p {
@@ -902,7 +902,7 @@ img {
   width: 100%;
   height: 895px;
   object-fit: cover;
-  object-position: center 28%;
+  object-position: center 75%;
 }
 
 .contact-fade {
@@ -967,13 +967,11 @@ img {
   width: 38px;
   height: 38px;
   object-fit: contain;
-  transform: translateY(5px);
 }
 
 .contact-item:first-child .contact-icon img {
   width: 40px;
   height: 40px;
-  transform: translateY(7px);
 }
 
 .contact-item p {
@@ -981,18 +979,18 @@ img {
   color: var(--dark-blue);
 }
 
-.contact-item span,
-.contact-item strong {
+.contact-item p span,
+.contact-item p strong {
   display: block;
 }
 
-.contact-item span {
+.contact-item p span {
   font-size: 19.46px;
   font-weight: 400;
   line-height: 32.1px;
 }
 
-.contact-item strong {
+.contact-item p strong {
   font-size: 22.45px;
   font-weight: 600;
   line-height: 32.1px;
@@ -1138,7 +1136,7 @@ img {
   position: absolute;
   top: 120px;
   left: 50%;
-  width: 1264.63px;
+  width: min(calc(100% - 96px), 1264.63px);
   height: 875px;
   transform: translateX(-50%);
   border-radius: 38.91px;
@@ -1173,13 +1171,14 @@ img {
   position: absolute;
   top: 209.52px;
   left: 45.64px;
+  right: 45.64px;
   display: grid;
-  grid-template-columns: repeat(4, 265.82px);
-  gap: 37.83px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(28px, 3.2vw, 58px);
 }
 
 .instagram-post {
-  width: 265.82px;
+  width: 100%;
   height: 620px;
   display: grid;
   place-items: center;
@@ -1202,12 +1201,12 @@ img {
 .instagram-post iframe {
   justify-self: start;
   align-self: start;
-  width: 326px;
+  width: 100%;
   height: 760px;
   overflow: hidden;
   border: 0;
   background: var(--cream);
-  transform: scale(0.8154);
+  transform: none;
   transform-origin: top left;
 }
 
@@ -1623,8 +1622,14 @@ img {
     gap: 16px;
     height: 88px;
     padding: 20px;
-    background: rgba(20, 57, 77, 0.72);
+  }
+
+  .site-header::before {
+    inset: 0 0 -42px;
+    background: rgba(37, 59, 66, 0.42);
     backdrop-filter: blur(14px);
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 56%, transparent 100%);
+    mask-image: linear-gradient(180deg, #000 0%, #000 56%, transparent 100%);
   }
 
   .brand-link,
@@ -1946,24 +1951,99 @@ img {
 }
 
 /* ─── Process steps entrance animation ──────────────────── */
+
+/*
+  Sequence (each step slot = 800ms):
+    0ms   step 1 number pops in
+    300ms step 1 text fades in
+    550ms line draws toward step 2
+    800ms step 2 number pops in
+    1100ms step 2 text fades in
+    1350ms line draws toward step 3
+    1600ms step 3 number pops in
+    1900ms step 3 text fades in
+    2150ms line draws toward step 4
+    2400ms step 4 number pops in
+    2700ms step 4 text fades in
+*/
+
+/* Initial states ───────────────────────────────────────── */
 .process-panel .step-number {
-  transform: translateX(-50%) scale(0);
+  transform: translateX(-50%) scale(0.8);
   opacity: 0;
 }
 
+.process-panel .process-card h3,
+.process-panel .process-card p {
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+.process-panel .process-line {
+  clip-path: inset(0 100% 0 0);
+}
+
+/* Line draw — single animation with built-in pauses ────── */
+/*
+  Line spans from step 1 center to step 4 center.
+  Geometrically: step 2 is at ~34%, step 3 at ~66%, step 4 at ~100%.
+  Timeline mapped to 3000ms total:
+    0-550ms   wait (step 1 number + text)
+    550-800ms draw to step 2 (~34% revealed)
+    800-1350ms pause (step 2 number + text)
+    1350-1600ms draw to step 3 (~66% revealed)
+    1600-2150ms pause (step 3 number + text)
+    2150-2400ms draw to step 4 (100% revealed)
+*/
+@keyframes drawLine {
+  0%    { clip-path: inset(0 100% 0 0); }
+  18.3% { clip-path: inset(0 100% 0 0); animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1); }
+  26.7% { clip-path: inset(0 66% 0 0); }
+  45%   { clip-path: inset(0 66% 0 0); animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1); }
+  53.3% { clip-path: inset(0 33% 0 0); }
+  71.7% { clip-path: inset(0 33% 0 0); animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1); }
+  80%   { clip-path: inset(0 0% 0 0); }
+  100%  { clip-path: inset(0 0% 0 0); }
+}
+
+.process-panel.is-visible .process-line {
+  animation: drawLine 3000ms linear forwards;
+}
+
+/* Step numbers pop in ──────────────────────────────────── */
 .process-panel.is-visible .step-number {
   transform: translateX(-50%) scale(1);
   opacity: 1;
   transition:
-    transform 500ms cubic-bezier(0.34, 1.56, 0.64, 1),
-    opacity 280ms ease-out;
+    transform 420ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 260ms ease-out;
 }
 
-.process-panel.is-visible .process-card:nth-child(1) .step-number { transition-delay: 80ms; }
-.process-panel.is-visible .process-card:nth-child(2) .step-number { transition-delay: 240ms; }
-.process-panel.is-visible .process-card:nth-child(3) .step-number { transition-delay: 400ms; }
-.process-panel.is-visible .process-card:nth-child(4) .step-number { transition-delay: 560ms; }
+.process-panel.is-visible .process-card:nth-child(1) .step-number { transition-delay: 0ms; }
+.process-panel.is-visible .process-card:nth-child(2) .step-number { transition-delay: 800ms; }
+.process-panel.is-visible .process-card:nth-child(3) .step-number { transition-delay: 1600ms; }
+.process-panel.is-visible .process-card:nth-child(4) .step-number { transition-delay: 2400ms; }
 
+/* Text fade in per step ────────────────────────────────── */
+.process-panel.is-visible .process-card h3,
+.process-panel.is-visible .process-card p {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 300ms ease-out,
+    transform 300ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.process-panel.is-visible .process-card:nth-child(1) h3 { transition-delay: 300ms; }
+.process-panel.is-visible .process-card:nth-child(1) p  { transition-delay: 380ms; }
+.process-panel.is-visible .process-card:nth-child(2) h3 { transition-delay: 1100ms; }
+.process-panel.is-visible .process-card:nth-child(2) p  { transition-delay: 1180ms; }
+.process-panel.is-visible .process-card:nth-child(3) h3 { transition-delay: 1900ms; }
+.process-panel.is-visible .process-card:nth-child(3) p  { transition-delay: 1980ms; }
+.process-panel.is-visible .process-card:nth-child(4) h3 { transition-delay: 2700ms; }
+.process-panel.is-visible .process-card:nth-child(4) p  { transition-delay: 2780ms; }
+
+/* Hover lift (desktop only) ────────────────────────────── */
 @media (hover: hover) and (pointer: fine) {
   .process-panel.is-visible .process-card:hover .step-number {
     transform: translateX(-50%) scale(1.08);
@@ -1971,9 +2051,19 @@ img {
   }
 }
 
+/* Reduced motion — show everything immediately ─────────── */
 @media (prefers-reduced-motion: reduce) {
   .process-panel .step-number {
     transform: translateX(-50%) scale(1);
     opacity: 1;
+  }
+  .process-panel .process-card h3,
+  .process-panel .process-card p {
+    opacity: 1;
+    transform: none;
+  }
+  .process-panel .process-line {
+    clip-path: none;
+    animation: none;
   }
 }

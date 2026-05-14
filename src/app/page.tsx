@@ -347,7 +347,9 @@ export default async function Home() {
             {instagramPosts.map((post, index) => {
               const label = post.label ?? `post ${index + 1}`;
               const media = post.thumbnailUrl ?? post.mediaUrl;
-              const content = post.embedUrl ? (
+              const content = media ? (
+                <img src={media} alt={post.caption ?? label} />
+              ) : post.embedUrl ? (
                 <iframe
                   src={post.embedUrl}
                   title={`Instagram ${label} - Escolta Lider`}
@@ -356,8 +358,6 @@ export default async function Home() {
                   allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
                   allowFullScreen
                 />
-              ) : media ? (
-                <img src={media} alt={post.caption ?? label} />
               ) : (
                 <span>{label}</span>
               );

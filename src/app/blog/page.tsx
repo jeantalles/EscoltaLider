@@ -1,5 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
-import Link from "next/link";
+
 import { getBlogPosts } from "@/lib/notion";
 
 export const metadata = {
@@ -12,11 +11,7 @@ export default async function BlogPage() {
 
   return (
     <main className="blog-page">
-      <header className="blog-header">
-        <Link href="/" aria-label="Voltar para a Home">
-          <img src="/images/escolta-lider/logo-branco.svg" alt="Escolta Lider" />
-        </Link>
-      </header>
+      <div className="blog-header" aria-hidden="true"></div>
 
       <section className="blog-hero">
         <p className="eyebrow">Blog</p>

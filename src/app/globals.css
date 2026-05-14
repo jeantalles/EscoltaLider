@@ -749,11 +749,11 @@ img {
 }
 
 .state-list li {
+  position: relative;
   height: 53.88px;
   display: flex;
   align-items: center;
   gap: 15px;
-  border-bottom: 1.2px solid rgba(255, 254, 251, 0.9);
   font-size: 19px;
   font-weight: 400;
 }
@@ -765,6 +765,18 @@ img {
   flex: 0 0 auto;
   border-radius: 50%;
   background: var(--cream);
+}
+
+.state-list li::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1.2px;
+  background: rgba(255, 254, 251, 0.9);
+  transform: scaleX(0);
+  transform-origin: left center;
 }
 
 .brazil-map {
@@ -879,9 +891,9 @@ img {
 }
 
 .testimonial-card footer strong {
-  font-size: 17.96px;
-  font-weight: 400;
-  line-height: 22.45px;
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 26px;
 }
 
 .testimonial-card footer span {
@@ -902,7 +914,8 @@ img {
   width: 100%;
   height: 895px;
   object-fit: cover;
-  object-position: center 75%;
+  object-position: center 100%;
+  transform: translateY(-100px);
 }
 
 .contact-fade {
@@ -1134,7 +1147,7 @@ img {
 
 .instagram-panel {
   position: absolute;
-  top: 120px;
+  top: 60px;
   left: 50%;
   width: min(calc(100% - 96px), 1264.63px);
   height: 875px;
@@ -1179,7 +1192,6 @@ img {
 
 .instagram-post {
   width: 100%;
-  height: 620px;
   display: grid;
   place-items: center;
   overflow: hidden;
@@ -1202,7 +1214,7 @@ img {
   justify-self: start;
   align-self: start;
   width: 100%;
-  height: 760px;
+  height: 600px;
   overflow: hidden;
   border: 0;
   background: var(--cream);
@@ -1404,7 +1416,6 @@ img {
   .about-text,
   .services-section .eyebrow,
   .services-section h2,
-  .service-card,
   .process-section .eyebrow,
   .process-heading h2,
   .process-heading p,
@@ -1412,11 +1423,9 @@ img {
   .process-card,
   .coverage-section h2,
   .coverage-copy,
-  .state-list,
   .brazil-map,
   .testimonials-section .eyebrow,
   .testimonials-section h2,
-  .testimonial-card,
   .contact-section h2,
   .contact-list,
   .whatsapp-button,
@@ -1440,21 +1449,16 @@ img {
     animation-name: soft-scale-in;
   }
 
-  .service-card:nth-child(2),
   .process-card:nth-child(2),
-  .testimonial-card-2,
   .instagram-post:nth-child(2) {
     animation-range: entry 12% cover 36%;
   }
 
-  .service-card:nth-child(3),
   .process-card:nth-child(3),
-  .testimonial-card-3,
   .instagram-post:nth-child(3) {
     animation-range: entry 16% cover 40%;
   }
 
-  .service-card:nth-child(4),
   .process-card:nth-child(4),
   .instagram-post:nth-child(4) {
     animation-range: entry 20% cover 44%;
@@ -1471,39 +1475,6 @@ img {
     animation: timeline-grow both;
     animation-range: entry 20% cover 40%;
     animation-timeline: view();
-  }
-
-  .state-list li {
-    animation: fade-up both;
-    animation-timeline: view();
-  }
-
-  .state-list li:nth-child(1) {
-    animation-range: entry 6% cover 24%;
-  }
-
-  .state-list li:nth-child(2) {
-    animation-range: entry 10% cover 28%;
-  }
-
-  .state-list li:nth-child(3) {
-    animation-range: entry 14% cover 32%;
-  }
-
-  .state-list li:nth-child(4) {
-    animation-range: entry 18% cover 36%;
-  }
-
-  .state-list li:nth-child(5) {
-    animation-range: entry 22% cover 40%;
-  }
-
-  .state-list li:nth-child(6) {
-    animation-range: entry 26% cover 44%;
-  }
-
-  .state-list li:nth-child(7) {
-    animation-range: entry 30% cover 48%;
   }
 }
 
@@ -1581,13 +1552,10 @@ img {
   .process-heading p,
   .process-panel,
   .coverage-section h2,
-  .coverage-copy,
   .state-list,
   .brazil-map,
   .testimonials-section .eyebrow,
   .testimonials-section h2,
-  .testimonial-grid,
-  .testimonial-card,
   .contact-section h2,
   .contact-list,
   .whatsapp-button,
@@ -1922,13 +1890,12 @@ img {
 
   .instagram-post {
     width: 100%;
-    height: 760px;
   }
 
   .instagram-post iframe {
     width: 100%;
     min-width: 326px;
-    height: 760px;
+    height: 600px;
     transform: none;
   }
 
@@ -2065,5 +2032,188 @@ img {
   .process-panel .process-line {
     clip-path: none;
     animation: none;
+  }
+}
+
+/* ─── State list entrance animation ─────────────────────── */
+
+/*
+  Each item slot = 200ms.
+  Within each slot: content appears first, line draws 150ms later.
+
+  Item 1: content 0ms,    line 150ms
+  Item 2: content 200ms,  line 350ms
+  Item 3: content 400ms,  line 550ms
+  Item 4: content 600ms,  line 750ms
+  Item 5: content 800ms,  line 950ms
+  Item 6: content 1000ms, line 1150ms
+  Item 7: content 1200ms, line 1350ms
+*/
+
+/* Initial states */
+.state-list li {
+  opacity: 0;
+  transform: translateY(5px);
+}
+
+/* When visible: content fades up */
+.state-list.is-visible li {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 260ms ease-out,
+    transform 260ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Line draws left-to-right after content */
+.state-list.is-visible li::after {
+  transform: scaleX(1);
+  transition: transform 320ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Staggered delays — content */
+.state-list.is-visible li:nth-child(1) { transition-delay: 300ms; }
+.state-list.is-visible li:nth-child(2) { transition-delay: 500ms; }
+.state-list.is-visible li:nth-child(3) { transition-delay: 700ms; }
+.state-list.is-visible li:nth-child(4) { transition-delay: 900ms; }
+.state-list.is-visible li:nth-child(5) { transition-delay: 1100ms; }
+.state-list.is-visible li:nth-child(6) { transition-delay: 1300ms; }
+.state-list.is-visible li:nth-child(7) { transition-delay: 1500ms; }
+
+/* Staggered delays — divider lines (content delay + 150ms) */
+.state-list.is-visible li:nth-child(1)::after { transition-delay: 450ms; }
+.state-list.is-visible li:nth-child(2)::after { transition-delay: 650ms; }
+.state-list.is-visible li:nth-child(3)::after { transition-delay: 850ms; }
+.state-list.is-visible li:nth-child(4)::after { transition-delay: 1050ms; }
+.state-list.is-visible li:nth-child(5)::after { transition-delay: 1250ms; }
+.state-list.is-visible li:nth-child(6)::after { transition-delay: 1450ms; }
+.state-list.is-visible li:nth-child(7)::after { transition-delay: 1650ms; }
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .state-list li {
+    opacity: 1;
+    transform: none;
+  }
+  .state-list li::after {
+    transform: scaleX(1);
+    transition: none;
+  }
+}
+
+/* ─── Testimonials entrance animation ───────────────────── */
+
+/*
+  Sequence (each card slot ≈ 950ms):
+    0ms    card 1 fades in (380ms)
+    200ms  card 1 text reveals top→bottom (720ms)
+    870ms  card 1 footer fades in (260ms)
+    950ms  card 2 fades in
+    1150ms card 2 text reveals (720ms)
+    1820ms card 2 footer fades in
+    1900ms card 3 fades in
+    2100ms card 3 text reveals (950ms — card 3 has more text)
+    3000ms card 3 footer fades in
+*/
+
+/* Initial states */
+.testimonial-grid .testimonial-card {
+  opacity: 0;
+  transform: translateY(10px) scale(0.97);
+}
+
+.testimonial-grid .testimonial-card p {
+  clip-path: inset(0 0 100% 0);
+}
+
+.testimonial-grid .testimonial-card footer {
+  opacity: 0;
+}
+
+/* Card entrance */
+.testimonial-grid.is-visible .testimonial-card {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 380ms ease-out,
+    transform 380ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.testimonial-grid.is-visible .testimonial-card-1 { transition-delay: 0ms; }
+.testimonial-grid.is-visible .testimonial-card-2 { transition-delay: 950ms; }
+.testimonial-grid.is-visible .testimonial-card-3 { transition-delay: 1900ms; }
+
+/* Text reveal — top to bottom (writing effect) */
+.testimonial-grid.is-visible .testimonial-card p {
+  clip-path: inset(0 0 0% 0);
+  transition: clip-path 720ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.testimonial-grid.is-visible .testimonial-card-1 p { transition-delay: 200ms; }
+.testimonial-grid.is-visible .testimonial-card-2 p { transition-delay: 1150ms; }
+.testimonial-grid.is-visible .testimonial-card-3 p {
+  transition-delay: 2100ms;
+  transition-duration: 950ms;
+}
+
+/* Footer fade in (after text is written) */
+.testimonial-grid.is-visible .testimonial-card footer {
+  opacity: 1;
+  transition: opacity 260ms ease-out;
+}
+
+.testimonial-grid.is-visible .testimonial-card-1 footer { transition-delay: 870ms; }
+.testimonial-grid.is-visible .testimonial-card-2 footer { transition-delay: 1820ms; }
+.testimonial-grid.is-visible .testimonial-card-3 footer { transition-delay: 3000ms; }
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .testimonial-grid .testimonial-card {
+    opacity: 1;
+    transform: none;
+  }
+  .testimonial-grid .testimonial-card p {
+    clip-path: none;
+  }
+  .testimonial-grid .testimonial-card footer {
+    opacity: 1;
+  }
+}
+
+/* ─── Service cards pop-in animation ────────────────────── */
+
+/*
+  Each card "jumps" onto screen with a spring bounce.
+  cubic-bezier(0.34, 1.56, 0.64, 1) overshoots scale(1) slightly,
+  creating the pop/jump feel.
+
+  Stagger: 130ms between cards (top-left, top-right, bottom-left, bottom-right).
+*/
+
+/* Initial state */
+.service-grid .service-card {
+  opacity: 0;
+  transform: scale(0.93) translateY(12px);
+}
+
+/* Jump in */
+.service-grid.is-visible .service-card {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 480ms ease-out,
+    transform 700ms cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+
+.service-grid.is-visible .service-card:nth-child(1) { transition-delay: 0ms; }
+.service-grid.is-visible .service-card:nth-child(2) { transition-delay: 180ms; }
+.service-grid.is-visible .service-card:nth-child(3) { transition-delay: 360ms; }
+.service-grid.is-visible .service-card:nth-child(4) { transition-delay: 540ms; }
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .service-grid .service-card {
+    opacity: 1;
+    transform: none;
   }
 }

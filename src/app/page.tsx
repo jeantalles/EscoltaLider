@@ -3,25 +3,10 @@ import Link from "next/link";
 import { getInstagramPosts } from "@/lib/instagram";
 import { getBlogPosts } from "@/lib/notion";
 import { ProcessStepsPanel } from "@/components/ProcessStepsPanel";
+import { StateListAnimated } from "@/components/StateListAnimated";
+import { TestimonialsAnimated } from "@/components/TestimonialsAnimated";
+import { ServiceGridAnimated } from "@/components/ServiceGridAnimated";
 
-const services = [
-  {
-    title: "Autorização especial de trânsito (AET)",
-    text: "Atuamos na emissão de autorizações junto ao DNIT, DER-MG, DER-SP e demais estados a nível Brasil.",
-  },
-  {
-    title: "Escolta de cargas especiais",
-    text: "Equipe experiente, frota conservada e protocolo definido. Do início da rota até a entrega no destino.",
-  },
-  {
-    title: "Análise e viabilidade de rota",
-    text: "Viabilizamos o transporte de qualquer tipo de carga superdimensionada por meio de Estudos de Viabilidade Geométrica, realizados junto às concessionárias e órgãos públicos, em âmbito nacional, para cargas de todas as dimensões.",
-  },
-  {
-    title: "Assessoria operacional",
-    text: "Oferecemos assessoria completa no transporte de cargas superdimensionadas, abrangendo desde a documentação até a escolta credenciada.",
-  },
-];
 
 const processSteps = [
   {
@@ -46,33 +31,6 @@ const processSteps = [
   },
 ];
 
-const states = [
-  "Minas Gerais — sede",
-  "Goiás",
-  "São Paulo",
-  "Rio de Janeiro",
-  "Espírito Santo",
-  "Mato Grosso do Sul",
-  "Bahia",
-];
-
-const testimonials = [
-  {
-    text: "Toda vez que fui atendido pela Escolta Líder, tive uma experiência muito positiva. A equipe é bem instruída, educada e ágil, com veículos novos e ótimo suporte nas viagens.",
-    name: "Pedro",
-    company: "Fagundes Mineração",
-  },
-  {
-    text: "A Escolta Líder presta um ótimo serviço de escolta com segurança, profissionalismo e eficiência. Agradecemos à equipe pela qualidade e agilidade dos serviços prestados.",
-    name: "Narzelio",
-    company: "Consórcio Mina Fábrica",
-  },
-  {
-    text: "Em nome da empresa Nova Luz, expresso a satisfação com o excelente trabalho realizado pela Escolta Líder na assessoria ao transporte de cargas e máquinas de grande porte, essencial para o sucesso das operações e garantindo a integridade das cargas.\n\nDestaco o profissionalismo, a responsabilidade e a eficiência em todas as operações, assegurando segurança e organização nos trajetos para diversas cidades e estados, e parabenizo toda a equipe da Escolta Lider pelo comprometimento e excelência nos serviços prestados.",
-    name: "Kadu",
-    company: "Nova Luz - NLZ",
-  },
-];
 
 export default async function Home() {
   const [instagramPosts, blogPosts] = await Promise.all([
@@ -91,27 +49,6 @@ export default async function Home() {
         />
         <div className="hero-gradient hero-gradient-a" />
         <div className="hero-gradient hero-gradient-b" />
-
-        <header className="site-header">
-          <Link href="#inicio" className="brand-link" aria-label="Escolta Lider">
-            <img
-              className="brand-logo"
-              src="/images/escolta-lider/logo-branco.svg"
-              alt="Escolta Lider"
-            />
-          </Link>
-          <nav className="main-nav" aria-label="Principal">
-            <Link href="#sobre">Sobre</Link>
-            <Link href="#servicos">Serviços</Link>
-            <Link href="#processo">Como trabalhamos</Link>
-            <Link href="#area">Área de atuação</Link>
-            <Link href="#blog">Blog</Link>
-            <Link href="#contato">Contato</Link>
-          </nav>
-          <Link href="#contato" className="header-cta">
-            Solicitar orçamento
-          </Link>
-        </header>
 
         <div className="hero-card">
           <p className="eyebrow hero-eyebrow">Escolta de cargas especiais</p>
@@ -169,14 +106,7 @@ export default async function Home() {
         <div className="section-inner">
           <p className="eyebrow dark">O que fazemos</p>
           <h2>Da autorização à estrada, um único parceiro.</h2>
-          <div className="service-grid">
-            {services.map((service) => (
-              <article className="service-card" key={service.title}>
-                <h3>{service.title}</h3>
-                <p>{service.text}</p>
-              </article>
-            ))}
-          </div>
+          <ServiceGridAnimated />
         </div>
       </section>
 
@@ -211,11 +141,7 @@ export default async function Home() {
             prontidão nos estados que representam os maiores polos logísticos do
             país:
           </p>
-          <ul className="state-list">
-            {states.map((state) => (
-              <li key={state}>{state}</li>
-            ))}
-          </ul>
+          <StateListAnimated />
           <img
             className="brazil-map"
             src="/images/escolta-lider/mapa-do-brasil.svg"
@@ -233,25 +159,7 @@ export default async function Home() {
         <div className="section-inner">
           <p className="eyebrow white">O que dizem sobre nós</p>
           <h2>Uma reputação que se constrói viagem a viagem.</h2>
-          <div className="testimonial-grid">
-            {testimonials.map((testimonial, index) => (
-              <article
-                className={`testimonial-card testimonial-card-${index + 1}`}
-                key={testimonial.name}
-              >
-                <img
-                  className="quote-icon"
-                  src="/images/escolta-lider/icone-de-aspas.svg"
-                  alt=""
-                />
-                <p>{testimonial.text}</p>
-                <footer>
-                  <strong>{testimonial.name}</strong>
-                  <span>{testimonial.company}</span>
-                </footer>
-              </article>
-            ))}
-          </div>
+          <TestimonialsAnimated />
         </div>
       </section>
 
@@ -346,10 +254,7 @@ export default async function Home() {
           <div className="instagram-grid">
             {instagramPosts.map((post, index) => {
               const label = post.label ?? `post ${index + 1}`;
-              const media = post.thumbnailUrl ?? post.mediaUrl;
-              const content = media ? (
-                <img src={media} alt={post.caption ?? label} />
-              ) : post.embedUrl ? (
+              const content = post.embedUrl ? (
                 <iframe
                   src={post.embedUrl}
                   title={`Instagram ${label} - Escolta Lider`}
@@ -358,6 +263,8 @@ export default async function Home() {
                   allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
                   allowFullScreen
                 />
+              ) : (post.thumbnailUrl ?? post.mediaUrl) ? (
+                <img src={post.thumbnailUrl ?? post.mediaUrl} alt={post.caption ?? label} />
               ) : (
                 <span>{label}</span>
               );

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Sora } from "next/font/google";
 import "./globals.css";
-
+import { SiteHeader } from "@/components/SiteHeader";
 const sora = Sora({
   variable: "--font-sora",
   subsets: ["latin"],
@@ -20,7 +20,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" className={`${sora.variable} h-full antialiased`}>
-      <body className="min-h-full">{children}</body>
+      <body className="min-h-full" suppressHydrationWarning>
+        <SiteHeader />
+        {children}
+      </body>
     </html>
   );
 }

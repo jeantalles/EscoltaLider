@@ -1024,7 +1024,7 @@ img {
 }
 
 .home-blog-section {
-  height: 686px;
+  height: 940px;
   background: var(--cream);
 }
 
@@ -1130,13 +1130,13 @@ img {
 }
 
 .instagram-section {
-  height: 990px;
+  height: 1110px;
   background: var(--cream);
 }
 
 .instagram-panel {
   position: absolute;
-  top: 0;
+  top: 120px;
   left: 50%;
   width: 1264.63px;
   height: 875px;

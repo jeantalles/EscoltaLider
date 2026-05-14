@@ -1,0 +1,13 @@
+node_modules/
+.git/
+.next/
+out/
+dist/
+*.log
+*.gz
+tmp_*
+.env
+.env.local
+.env*.local
+public/images/
+public/videos/

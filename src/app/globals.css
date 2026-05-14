@@ -1,0 +1,42 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --color-brand-dark: #14394D;
+  --color-brand-orange: #FF7716;
+  --color-brand-blue-gray: #BFD6DE;
+  --color-brand-off-white: #FFFEFB;
+  --font-sora: "Sora", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #FFFEFB;
+  color: #14394D;
+  font-family: "Sora", sans-serif;
+}
+
+.blog-body {
+  font-family: "Sora", sans-serif;
+}
+
+.blog-body h1,
+.blog-body h2,
+.blog-body h3,
+.blog-body h4 {
+  font-family: "Sora", sans-serif;
+  font-weight: 600;
+  color: #14394D;
+}
+
+.blog-body p {
+  font-size: 18px;
+  line-height: 1.8;
+}

@@ -114,7 +114,7 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
             },
           ],
         }),
-        next: { revalidate: 900 },
+        next: { revalidate: 10 },
       },
     );
 
@@ -179,7 +179,7 @@ export async function getPostBlocks(pageId: string): Promise<NotionBlock[]> {
           Authorization: `Bearer ${token}`,
           "Notion-Version": "2022-06-28",
         },
-        next: { revalidate: 900 },
+        next: { revalidate: 10 },
       },
     );
 

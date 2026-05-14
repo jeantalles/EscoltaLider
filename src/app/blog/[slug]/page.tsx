@@ -37,7 +37,7 @@ function richText(items: RichTextItem[]): React.ReactNode {
   });
 }
 
-function Block({ block }: { block: NotionBlock }) {
+function Block({ block, coverUrl }: { block: NotionBlock; coverUrl?: string }) {
   switch (block.type) {
     case "paragraph":
       return block.paragraph?.rich_text.length ? (
@@ -85,7 +85,7 @@ function Block({ block }: { block: NotionBlock }) {
           ? block.image.external?.url
           : block.image?.file?.url;
       const caption = block.image?.caption ?? [];
-      if (!url) return null;
+      if (!url || url === coverUrl) return null;
       return (
         <figure className="post-figure">
           <img src={url} alt={caption.map((c) => c.plain_text).join("") || ""} className="post-img" />
@@ -132,7 +132,7 @@ export default async function PostPage({
 
       <article className="post-body">
         {blocks.map((block) => (
-          <Block key={block.id} block={block} />
+          <Block key={block.id} block={block} coverUrl={post.cover} />
         ))}
       </article>
 

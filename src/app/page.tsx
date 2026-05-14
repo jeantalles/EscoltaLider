@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { getInstagramPosts } from "@/lib/instagram";
 import { getBlogPosts } from "@/lib/notion";
+import { ProcessStepsPanel } from "@/components/ProcessStepsPanel";
 
 const services = [
   {
@@ -194,18 +195,7 @@ export default async function Home() {
               realmente precisa.
             </p>
           </div>
-          <div className="process-panel">
-            <div className="process-line" />
-            <div className="process-grid">
-              {processSteps.map((step) => (
-                <article className="process-card" key={step.number}>
-                  <span className="step-number">{step.number}</span>
-                  <h3>{step.title}</h3>
-                  <p>{step.text}</p>
-                </article>
-              ))}
-            </div>
-          </div>
+          <ProcessStepsPanel steps={processSteps} />
         </div>
       </section>
 

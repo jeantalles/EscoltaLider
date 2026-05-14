@@ -37,16 +37,9 @@ const fallbackPosts: InstagramPost[] = [
     mediaUrl: "/images/escolta-lider/instagram/post-3.webp",
     thumbnailUrl: "/images/escolta-lider/instagram/post-3.webp",
   },
-  {
-    id: "DXo2K_cDlKD",
-    shortcode: "DXo2K_cDlKD",
-    label: "post 4",
-    permalink: "https://www.instagram.com/p/DXo2K_cDlKD/",
-    embedUrl: "https://www.instagram.com/p/DXo2K_cDlKD/embed/",
-    mediaUrl: "/images/escolta-lider/instagram/post-4.webp",
-    thumbnailUrl: "/images/escolta-lider/instagram/post-4.webp",
-  },
 ];
+
+const hiddenShortcodes = new Set(["DXo2K_cDlKD"]);
 
 type InstagramGraphResponse = {
   data?: Array<{
@@ -138,6 +131,7 @@ async function getPublicProfilePosts(limit: number): Promise<InstagramPost[]> {
       });
     })
     .filter((post): post is InstagramPost => Boolean(post))
+    .filter((post) => !post.shortcode || !hiddenShortcodes.has(post.shortcode))
     .slice(0, limit);
 }
 
@@ -182,17 +176,19 @@ export async function getInstagramPosts(limit = 4): Promise<InstagramPost[]> {
     }
 
     const payload = (await response.json()) as InstagramGraphResponse;
-    const posts = payload.data?.map((post, index) => ({
-      id: post.id,
-      caption: post.caption,
-      label: `post ${index + 1}`,
-      mediaUrl: post.media_url,
-      thumbnailUrl: post.thumbnail_url,
-      permalink: post.permalink,
-      embedUrl: post.permalink
-        ? `${post.permalink.replace(/\/?$/, "/")}embed/`
-        : undefined,
-    }));
+    const posts = payload.data
+      ?.filter((post) => !post.permalink?.includes("/p/DXo2K_cDlKD/"))
+      .map((post, index) => ({
+        id: post.id,
+        caption: post.caption,
+        label: `post ${index + 1}`,
+        mediaUrl: post.media_url,
+        thumbnailUrl: post.thumbnail_url,
+        permalink: post.permalink,
+        embedUrl: post.permalink
+          ? `${post.permalink.replace(/\/?$/, "/")}embed/`
+          : undefined,
+      }));
 
     return posts?.length ? posts : fallbackPosts.slice(0, limit);
   } catch {

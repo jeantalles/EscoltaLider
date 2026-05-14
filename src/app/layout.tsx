@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Sora } from "next/font/google";
 import "./globals.css";
 import { SiteHeader } from "@/components/SiteHeader";
+import { SiteFooter } from "@/components/SiteFooter";
 const sora = Sora({
   variable: "--font-sora",
   subsets: ["latin"],
@@ -45,6 +46,7 @@ export default function RootLayout({
       <body className="min-h-full" suppressHydrationWarning>
         <SiteHeader />
         {children}
+        <SiteFooter />
       </body>
     </html>
   );

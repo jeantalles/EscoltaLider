@@ -75,7 +75,7 @@ const testimonials = [
 
 export default async function Home() {
   const [instagramPosts, blogPosts] = await Promise.all([
-    getInstagramPosts(4),
+    getInstagramPosts(3),
     getBlogPosts(),
   ]);
   const homeBlogPosts = blogPosts.slice(0, 3);

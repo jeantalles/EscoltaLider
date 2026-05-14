@@ -219,7 +219,15 @@ export default async function Home() {
             {homeBlogPosts.length ? (
               homeBlogPosts.map((post) => (
                 <article className="home-blog-card" key={post.id}>
-                  <div className="blog-image-placeholder" aria-hidden="true" />
+                  {post.cover ? (
+                    <img
+                      src={post.cover}
+                      alt={post.title}
+                      className="blog-cover-image"
+                    />
+                  ) : (
+                    <div className="blog-image-placeholder" aria-hidden="true" />
+                  )}
                   <span>{post.publishedAt ?? "Escolta Lider"}</span>
                   <h3>{post.title}</h3>
                   {post.excerpt ? <p>{post.excerpt}</p> : null}
